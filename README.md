@@ -10,15 +10,27 @@ Bu repository; sıfırdan bilgisayarlı görü (computer vision) ve dijital gör
 
 ---
 
-## Müfredat Akış Şeması
+## Müfredat ve Bilgisayarlı Görü Pipeline Akışı
 
 ```mermaid
-graph LR
-    A[01 Piksel & Histogram] --> B[02 Geometrik Dönüşümler]
-    B --> C[03 Uzamsal Filtreler & Kenar]
-    C --> D[04 Eşikleme & Segmentasyon]
-    D --> E[05 Morfolojik Operatörler]
-    E -. Gelecek Modüller .-> F[06-10 İleri Düzey Algoritmalar]
+graph TD
+    subgraph Ön İşleme ve Görüntü İyileştirme
+        A[01 Piksel Matrisi & Histogram / CLAHE] --> B[02 Geometrik Dönüşümler & Afin]
+        B --> C[09 Renk Uzayları: RGB / HSV / LAB Maskeleme]
+    end
+    subgraph Çekirdek Filtreleme ve Kenar Analizi
+        C --> D[03 Uzamsal Konvolüsyon & Sobel Filtresi]
+        D --> E[06 Canny Kenar Algılama & Gradyan Yönü]
+    end
+    subgraph İkili Dönüşüm ve Morfoloji
+        E --> F[04 Eşikleme & İkili Maske]
+        F --> G[05 Morfolojik Operatörler: Açma / Kapama]
+    end
+    subgraph Yüksek Seviye Çıkarım ve Tespit
+        G --> H[07 Kontur Analizi & Geometrik Şekil Tanıma]
+        H --> I[08 Hough Dönüşümü: Çizgi & Daire Tespiti]
+        I --> J[10 Haar Cascade ile Yüz & Göz Tespiti]
+    end
 ```
 
 ---
